@@ -1,5 +1,5 @@
 {
-  "name": "create-blogfactory",
+  "name": "blogfactory",
   "type": "module",
   "version": "0.0.1",
   "description": "Scaffold a config-driven, Notion-as-CMS Astro brand site (blog + newsletter + landing) with one command.",
@@ -27,7 +27,7 @@
     "node": ">=22.12.0"
   },
   "bin": {
-    "create-blogfactory": "./bin/create-blogfactory.mjs"
+    "blogfactory": "./bin/blogfactory.mjs"
   },
   "files": [
     "bin",
@@ -44,7 +44,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro",
-    "create": "node ./bin/create-blogfactory.mjs"
+    "create": "node ./bin/blogfactory.mjs"
   },
   "dependencies": {
     "@astro-notion/loader": "^1.1.2",

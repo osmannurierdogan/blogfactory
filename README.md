@@ -1,4 +1,4 @@
-# create-blogfactory
+# blogfactory
 
 Reusable, config-driven brand website template (blog/content + newsletter + landing),
 scaffolded via a CLI. First brand built on it:
@@ -10,7 +10,7 @@ Vue 3 islands with shadcn-vue, Netlify hosting, Beehiiv newsletter.
 ## Scaffolding a new brand site
 
 ```sh
-npx create-blogfactory
+npx blogfactory
 ```
 
 This asks for the brand name, tagline, domain, store URL, language, theme colors, and
@@ -23,7 +23,7 @@ Alternatively, run it from a local checkout of this repo without installing glob
 
 ```sh
 pnpm install
-pnpm create   # runs bin/create-blogfactory.mjs directly
+pnpm create   # runs bin/blogfactory.mjs directly
 ```
 
 ## Working on this repo directly (the reference site)
@@ -48,7 +48,7 @@ fallback, since Notion is the single source of truth for these pages.
 ## Project structure
 
 ```text
-bin/                       create-blogfactory CLI (scaffolds new projects from this template)
+bin/                       blogfactory CLI (scaffolds new projects from this template)
 src/
   config/brand.config.ts   Single source of truth for brand values (colors, fonts, IDs)
   content.config.ts        Notion-as-CMS content collections: posts (blog) + pages (site pages)
@@ -128,7 +128,7 @@ Everything else — page copy structure, `robots.txt`, `llms.txt`, the sitemap, 
 JSON-LD, the Notion content schema — reads from those two sources at build time. To spin
 up a new brand:
 
-1. Run `npx create-blogfactory` (fills in `src/config/brand.config.ts` and `PUBLIC_SITE_URL`
+1. Run `npx blogfactory` (fills in `src/config/brand.config.ts` and `PUBLIC_SITE_URL`
    from your prompts) — or duplicate this repo manually and edit `brand.config.ts` yourself.
 2. Create both Notion databases with the exact schema (see "Content model" above).
 3. Fill in `.env` with the new brand's Notion, analytics, and Beehiiv IDs.

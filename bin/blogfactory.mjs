@@ -133,7 +133,7 @@ async function writePackageJson(targetDir, name) {
 }
 
 async function main() {
-  clack.intro('create-blogfactory');
+  clack.intro('blogfactory');
 
   const answers = await promptAnswers(process.argv[2]);
   const targetDir = path.resolve(process.cwd(), answers.targetDirInput);

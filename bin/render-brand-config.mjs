@@ -60,7 +60,7 @@ export function renderBrandConfig({ brandName, tagline, domain, storeUrl, langua
 
 /**
  * Single source of truth for brand-specific values. To spin up another
- * brand, run \`npx create-blogfactory\` again, or edit these values directly.
+ * brand, run \`npx blogfactory\` again, or edit these values directly.
  */
 export const brandConfig: BrandConfig = {
   brandName: ${JSON.stringify(brandName)},
