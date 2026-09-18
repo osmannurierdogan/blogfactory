@@ -1,0 +1,48 @@
+---
+import { brandConfig } from '@/config/brand.config';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, description, ogImage, jsonLd, noindex = false } = Astro.props;
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || `https://${brandConfig.domain}`;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const resolvedOgImage = new URL(
+  ogImage ?? brandConfig.seo.defaultOgImage,
+  siteUrl,
+).toString();
+
+const fullTitle = title === brandConfig.brandName ? title : `${title} | ${brandConfig.brandName}`;
+
+const jsonLdEntries = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+{noindex && <meta name="robots" content="noindex,nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={resolvedOgImage} />
+<meta property="og:site_name" content={brandConfig.brandName} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={resolvedOgImage} />
+{brandConfig.seo.twitterHandle && (
+  <meta name="twitter:site" content={brandConfig.seo.twitterHandle} />
+)}
+
+{jsonLdEntries.map((entry) => (
+  <script type="application/ld+json" set:html={JSON.stringify(entry)} />
+))}

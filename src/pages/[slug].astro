@@ -1,0 +1,24 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSitePages } from '@/lib/pages';
+
+export async function getStaticPaths() {
+  const pages = await getSitePages();
+  return pages.map((page) => ({
+    params: { slug: page.data.properties.Slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const { Title, MetaDescription } = page.data.properties;
+const { Content } = await render(page);
+---
+
+<BaseLayout title={Title} description={MetaDescription || Title}>
+  <article class="prose prose-neutral mx-auto max-w-2xl px-6 py-16">
+    <h1>{Title}</h1>
+    <Content />
+  </article>
+</BaseLayout>

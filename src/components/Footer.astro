@@ -1,0 +1,31 @@
+---
+import { brandConfig } from '@/config/brand.config';
+import { getNavPages } from '@/lib/pages';
+
+const year = new Date().getFullYear();
+const socialLinks = Object.entries(brandConfig.social).filter(([, url]) => Boolean(url));
+const footerPages = await getNavPages('footer');
+---
+
+<footer class="border-t border-border">
+  <div class="mx-auto flex max-w-4xl flex-col gap-4 px-6 py-10 text-sm text-foreground/70">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <p>&copy; {year} {brandConfig.brandName}. All rights reserved.</p>
+      <nav class="flex gap-4">
+        {socialLinks.map(([platform, url]) => (
+          <a href={url} class="capitalize hover:text-foreground" rel="me noopener noreferrer" target="_blank">
+            {platform}
+          </a>
+        ))}
+      </nav>
+    </div>
+    <nav class="flex flex-wrap gap-4">
+      {footerPages.map((page) => (
+        <a href={`/${page.data.properties.Slug}`} class="hover:text-foreground">
+          {page.data.properties.Title}
+        </a>
+      ))}
+      <a href="/rss.xml" class="hover:text-foreground">RSS</a>
+    </nav>
+  </div>
+</footer>

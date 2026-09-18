@@ -1,0 +1,18 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NewsletterForm from '@/components/NewsletterForm.astro';
+import { brandConfig } from '@/config/brand.config';
+---
+
+<BaseLayout
+  title="Newsletter"
+  description={`Subscribe to ${brandConfig.brandName}'s newsletter.`}
+>
+  <section class="mx-auto max-w-xl px-6 py-20 text-center">
+    <h1 class="text-3xl font-semibold tracking-tight">Join the newsletter</h1>
+    <p class="mt-4 text-foreground/70">{brandConfig.tagline}</p>
+    <div class="mt-8">
+      <NewsletterForm />
+    </div>
+  </section>
+</BaseLayout>

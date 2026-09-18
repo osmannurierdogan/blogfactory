@@ -1,0 +1,61 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NewsletterForm from '@/components/NewsletterForm.astro';
+import { brandConfig } from '@/config/brand.config';
+import { getPublishedPosts, getPostSlug } from '@/lib/posts';
+
+const posts = (await getPublishedPosts()).slice(0, 5);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: brandConfig.brandName,
+    url: `https://${brandConfig.domain}`,
+    logo: brandConfig.theme.logoUrl,
+    sameAs: Object.values(brandConfig.social).filter(Boolean),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: brandConfig.brandName,
+    url: `https://${brandConfig.domain}`,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `https://${brandConfig.domain}/blog?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  },
+];
+---
+
+<BaseLayout title={brandConfig.brandName} description={brandConfig.tagline} jsonLd={jsonLd}>
+  <section class="mx-auto max-w-4xl px-6 py-20 text-center">
+    <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">{brandConfig.brandName}</h1>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-foreground/70">{brandConfig.tagline}</p>
+    <div class="mx-auto mt-8 max-w-sm">
+      <NewsletterForm />
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 pb-20">
+    <h2 class="mb-6 text-xl font-semibold">Latest essays</h2>
+    {posts.length === 0 && (
+      <p class="text-sm text-foreground/60">
+        No essays published yet — connect your Notion database to see them here.
+      </p>
+    )}
+    <ul class="flex flex-col gap-6">
+      {posts.map((post) => (
+        <li>
+          <a href={`/blog/${getPostSlug(post)}`} class="group block">
+            <h3 class="text-lg font-medium group-hover:underline">
+              {post.data.properties.Title}
+            </h3>
+            <p class="mt-1 text-sm text-foreground/70">{post.data.properties.Excerpt}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

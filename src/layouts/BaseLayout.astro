@@ -1,0 +1,56 @@
+---
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/fraunces/500.css';
+import '@fontsource/fraunces/600.css';
+import '@/styles/global.css';
+import { brandConfig } from '@/config/brand.config';
+import SEO from '@/components/SEO.astro';
+import AnalyticsScripts from '@/components/AnalyticsScripts.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import CookieConsent from '@/components/CookieConsent.vue';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, description, ogImage, jsonLd, noindex } = Astro.props;
+const { colors, fonts } = brandConfig.theme;
+
+const brandStyles = `:root {
+  --primary: ${colors.primary};
+  --primary-foreground: ${colors.background};
+  --secondary: ${colors.secondary};
+  --accent: ${colors.accent};
+  --background: ${colors.background};
+  --foreground: ${colors.text};
+  --brand-font-heading: '${fonts.heading}';
+  --brand-font-body: '${fonts.body}';
+}`;
+---
+
+<!doctype html>
+<html lang={brandConfig.language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href={brandConfig.theme.faviconUrl} />
+    <SEO title={title} description={description} ogImage={ogImage} jsonLd={jsonLd} noindex={noindex} />
+    <AnalyticsScripts />
+    <style set:html={brandStyles} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <CookieConsent client:idle />
+  </body>
+</html>

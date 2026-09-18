@@ -1,0 +1,95 @@
+---
+// Tag/page filtering reads query params, so this route needs on-demand
+// rendering rather than the site's default static prerendering.
+export const prerender = false;
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { brandConfig } from '@/config/brand.config';
+import { getPublishedPosts, getPostSlug } from '@/lib/posts';
+
+const allPosts = await getPublishedPosts();
+
+const requestedTag = Astro.url.searchParams.get('tag');
+const page = Math.max(1, Number(Astro.url.searchParams.get('page') ?? '1') || 1);
+const perPage = 10;
+
+const allTags = [...new Set(allPosts.flatMap((post) => post.data.properties.Tags))].sort();
+
+const filteredPosts = requestedTag
+  ? allPosts.filter((post) => post.data.properties.Tags.includes(requestedTag))
+  : allPosts;
+
+const totalPages = Math.max(1, Math.ceil(filteredPosts.length / perPage));
+const currentPage = Math.min(page, totalPages);
+const paginatedPosts = filteredPosts.slice((currentPage - 1) * perPage, currentPage * perPage);
+
+function pageHref(targetPage: number): string {
+  const params = new URLSearchParams();
+  if (requestedTag) params.set('tag', requestedTag);
+  if (targetPage > 1) params.set('page', String(targetPage));
+  const query = params.toString();
+  return query ? `/blog?${query}` : '/blog';
+}
+---
+
+<BaseLayout
+  title="Essays"
+  description={`Essays from ${brandConfig.brandName}${requestedTag ? ` tagged "${requestedTag}"` : ''}.`}
+>
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <h1 class="text-3xl font-semibold tracking-tight">Essays</h1>
+
+    {allTags.length > 0 && (
+      <nav class="mt-6 flex flex-wrap gap-2 text-sm">
+        <a
+          href="/blog"
+          class:list={[
+            'rounded-full border px-3 py-1',
+            !requestedTag ? 'border-foreground bg-foreground text-background' : 'border-border text-foreground/70',
+          ]}
+        >
+          All
+        </a>
+        {allTags.map((tag) => (
+          <a
+            href={`/blog?tag=${encodeURIComponent(tag)}`}
+            class:list={[
+              'rounded-full border px-3 py-1',
+              requestedTag === tag ? 'border-foreground bg-foreground text-background' : 'border-border text-foreground/70',
+            ]}
+          >
+            {tag}
+          </a>
+        ))}
+      </nav>
+    )}
+
+    <ul class="mt-10 flex flex-col gap-8">
+      {paginatedPosts.length === 0 && (
+        <p class="text-sm text-foreground/60">No essays found.</p>
+      )}
+      {paginatedPosts.map((post) => (
+        <li>
+          <a href={`/blog/${getPostSlug(post)}`} class="group block">
+            <h2 class="text-xl font-medium group-hover:underline">
+              {post.data.properties.Title}
+            </h2>
+            <p class="mt-2 text-sm text-foreground/70">{post.data.properties.Excerpt}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    {totalPages > 1 && (
+      <nav class="mt-12 flex items-center justify-center gap-4 text-sm">
+        {currentPage > 1 && (
+          <a href={pageHref(currentPage - 1)} rel="prev" class="hover:underline">&larr; Previous</a>
+        )}
+        <span class="text-foreground/60">Page {currentPage} of {totalPages}</span>
+        {currentPage < totalPages && (
+          <a href={pageHref(currentPage + 1)} rel="next" class="hover:underline">Next &rarr;</a>
+        )}
+      </nav>
+    )}
+  </section>
+</BaseLayout>

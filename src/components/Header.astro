@@ -1,0 +1,44 @@
+---
+import { brandConfig } from '@/config/brand.config';
+import { getNavPages } from '@/lib/pages';
+
+// Core routes have real functionality (not Notion content pages) and are
+// always shown. Additional links come from the "pages" Notion database,
+// controlled per-page by its "Location" property (Topbar/Footer/Direct Link).
+const coreLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Essays' },
+  { href: '/newsletter', label: 'Newsletter' },
+];
+
+const topbarPages = await getNavPages('topbar');
+---
+
+<header class="border-b border-border">
+  <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-5">
+    <a href="/" class="font-heading text-lg font-semibold tracking-tight">
+      {brandConfig.brandName}
+    </a>
+    <nav class="flex items-center gap-6 text-sm">
+      {coreLinks.map((link) => (
+        <a href={link.href} class="text-foreground/80 transition-colors hover:text-foreground">
+          {link.label}
+        </a>
+      ))}
+      {topbarPages.map((page) => (
+        <a
+          href={`/${page.data.properties.Slug}`}
+          class="text-foreground/80 transition-colors hover:text-foreground"
+        >
+          {page.data.properties.Title}
+        </a>
+      ))}
+      <a
+        href={brandConfig.storeUrl}
+        class="text-foreground/80 transition-colors hover:text-foreground"
+      >
+        Store
+      </a>
+    </nav>
+  </div>
+</header>

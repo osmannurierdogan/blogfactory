@@ -1,0 +1,9 @@
+---
+import { brandConfig } from '@/config/brand.config';
+import NewsletterFormIsland from '@/components/NewsletterForm.vue';
+---
+
+<NewsletterFormIsland
+  client:visible
+  beehiivPublicationId={brandConfig.newsletter.beehiivPublicationId}
+/>

@@ -1,0 +1,83 @@
+{
+  "name": "create-blogfactory",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Scaffold a config-driven, Notion-as-CMS Astro brand site (blog + newsletter + landing) with one command.",
+  "keywords": [
+    "astro",
+    "astro-template",
+    "cli",
+    "scaffold",
+    "notion",
+    "notion-cms",
+    "blog",
+    "create-astro"
+  ],
+  "license": "MIT",
+  "author": "Osman Nuri Erdoğan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osmannurierdogan/blogfactory.git"
+  },
+  "homepage": "https://github.com/osmannurierdogan/blogfactory#readme",
+  "bugs": {
+    "url": "https://github.com/osmannurierdogan/blogfactory/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "bin": {
+    "create-blogfactory": "./bin/create-blogfactory.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "public",
+    "astro.config.mjs",
+    "tsconfig.json",
+    "components.json",
+    ".env.example"
+  ],
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro",
+    "create": "node ./bin/create-blogfactory.mjs"
+  },
+  "dependencies": {
+    "@astro-notion/loader": "^1.1.2",
+    "@astrojs/netlify": "^8.2.6",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vue": "^7.0.3",
+    "@clack/prompts": "^1.8.1",
+    "@fontsource/fraunces": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@lucide/vue": "^1.47.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vueuse/core": "^15.0.0",
+    "astro": "^7.3.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "reka-ui": "^2.10.4",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.3",
+    "tw-animate-css": "^1.4.0",
+    "vue": "^3.5.43"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/typography": "^0.5.20",
+    "shadcn-vue": "^2.8.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.0"
+  }
+}
